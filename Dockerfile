@@ -1,8 +1,9 @@
 # syntax = docker/dockerfile:1.0-experimental
 
-FROM python:3.11.2-slim
+FROM python:3.11.2-alpine
 
-RUN pip install --upgrade pip
+RUN apk add curl \
+    && pip install --upgrade pip
 
 # RUN git clone https://github.com/trickeydan/hue2mqtt-python.git
 
