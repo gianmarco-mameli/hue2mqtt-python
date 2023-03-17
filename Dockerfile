@@ -13,11 +13,12 @@ WORKDIR /hue2mqtt-python
 
 ENV POETRY_HOME=/poetry
 
-RUN curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
+RUN curl -sSL https://install.python-poetry.org | python3 -
 
 ENV PATH="/poetry/bin:${PATH}"
 
-RUN poetry install -vvv --no-ansi
+RUN poetry --version \
+    && poetry install -vvv --no-ansi
 
 VOLUME [ "/hue2mqtt-python/hue2mqtt.toml" ]
 
