@@ -6,7 +6,7 @@ RUN pip install --upgrade pip
 
 # RUN git clone https://github.com/trickeydan/hue2mqtt-python.git
 
-COPY ./* /hue2mqtt-python/.
+COPY . /hue2mqtt-python
 
 WORKDIR /hue2mqtt-python
 
