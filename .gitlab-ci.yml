@@ -44,6 +44,7 @@ build_image:
     - docker buildx bake --load --file package_bake.hcl --progress plain
   rules:
     - changes:
+        - Dockerfile
         - .gitlab-ci.yml
         - package_bake.hcl
   after_script:
@@ -59,5 +60,6 @@ publish_image:
     - docker manifest push $REGISTRY_IMAGE:$VERSION
   rules:
     - changes:
+        - Dockerfile
         - .gitlab-ci.yml
         - package_bake.hcl
