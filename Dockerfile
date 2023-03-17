@@ -3,7 +3,7 @@
 FROM python:3.11.2-slim
 
 RUN apt-get update \
-    && apt-get install -y curl \\
+    && apt-get install -y curl \
     && pip install --upgrade pip
 
 # RUN git clone https://github.com/trickeydan/hue2mqtt-python.git
