@@ -1,10 +1,12 @@
 # syntax = docker/dockerfile:1.0-experimental
 
-FROM python:3.8
+FROM python:3.11.2-slim
 
 RUN pip install --upgrade pip
 
-RUN git clone https://github.com/trickeydan/hue2mqtt-python.git
+# RUN git clone https://github.com/trickeydan/hue2mqtt-python.git
+
+COPY ../* /hue2mqtt-python
 
 WORKDIR /hue2mqtt-python
 
