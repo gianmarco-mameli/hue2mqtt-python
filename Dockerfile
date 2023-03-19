@@ -1,6 +1,6 @@
 # syntax = docker/dockerfile:1.0-experimental
 
-FROM python:3.8
+FROM python:3.11.2
 
 # RUN apt-get update \
 #     && apt-get install -y curl \
