@@ -12,14 +12,19 @@ COPY . /hue2mqtt-python
 
 WORKDIR /hue2mqtt-python
 
-ENV POETRY_HOME=/poetry
+ENV POETRY_HOME=/opt/poetry
 
-RUN curl -sSL https://install.python-poetry.org | python3 -
+RUN python3 -m venv $POETRY_HOME \
+    && $POETRY_HOME/bin/pip install poetry==1.4.0 \
+    && $POETRY_HOME/bin/poetry --version
 
-ENV PATH="/poetry/bin:${PATH}"
+# ENV POETRY_HOME=/poetry
 
-RUN poetry --version \
-    && poetry install -vvv --no-ansi
+# RUN curl -sSL https://install.python-poetry.org | python3 -
+
+ENV PATH="${POETRY_HOME}/bin:${PATH}"
+
+RUN poetry install -vvv --no-ansi
 
 VOLUME [ "/hue2mqtt-python/hue2mqtt.toml" ]
 
