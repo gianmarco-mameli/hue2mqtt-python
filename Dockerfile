@@ -15,6 +15,7 @@ WORKDIR /hue2mqtt-python
 ENV POETRY_HOME=/opt/poetry
 
 RUN python3 -m venv $POETRY_HOME \
+    && $POETRY_HOME/bin/pip install install cryptography \
     && $POETRY_HOME/bin/pip install poetry==1.4.0 \
     && $POETRY_HOME/bin/poetry --version
 
