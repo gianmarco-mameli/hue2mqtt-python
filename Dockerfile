@@ -14,7 +14,7 @@ WORKDIR /hue2mqtt-python
 
 ENV POETRY_HOME=/opt/poetry
 
-RUN apk add --no-cache libressl-dev gcc musl-dev libffi-dev openssl-dev cargo \
+RUN apk add --no-cache gcc musl-dev libffi-dev openssl-dev cargo \
     && command python3 -m venv $POETRY_HOME \
     && $POETRY_HOME/bin/pip install --upgrade pip \
     # && $POETRY_HOME/bin/pip install install cryptography rust
