@@ -12,12 +12,9 @@ RUN apk add --no-cache gcc musl-dev libffi-dev openssl-dev cargo \
     && $POETRY_HOME/bin/pip install poetry==1.4.0 \
     && $POETRY_HOME/bin/poetry --version
 
-ENV POETRY_HOME=/poetry
-
-
 ENV PATH="${POETRY_HOME}/bin:${PATH}"
 
-RUN $POETRY_HOME/bin/poetry install -vvv --no-ansi
+RUN poetry install -vvv --no-ansi
 
 VOLUME [ "/hue2mqtt-python/hue2mqtt.toml" ]
 
