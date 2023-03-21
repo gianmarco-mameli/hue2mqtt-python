@@ -7,10 +7,8 @@ variable "REGISTRY_IMAGE" {
 }
 
 group "default" {
-  targets = ["package-armv7"]
+  targets = ["package-armv7", "package-arm64"]
 }
-
-// , "package-arm64"
 
 target "default" {
   dockerfile = "Dockerfile"
