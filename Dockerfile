@@ -16,7 +16,7 @@ ENV PATH="${POETRY_HOME}/bin:${PATH}"
 
 RUN poetry install -vvv --no-ansi
 
-VOLUME [ "/hue2mqtt-python/hue2mqtt.toml" ]
+VOLUME [ "/hue2mqtt-python" ]
 
 ENTRYPOINT ["poetry"]
 CMD ["run", "hue2mqtt"]
