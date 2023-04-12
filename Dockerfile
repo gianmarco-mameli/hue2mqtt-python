@@ -1,22 +1,25 @@
-FROM python:3.8-alpine
+FROM python:3.11-alpine3.17
 
-COPY . /hue2mqtt-python
+RUN pip install --no-cache-dir hue2mqtt==0.4.0
 
-WORKDIR /hue2mqtt-python
+# COPY . /hue2mqtt-python
 
-ENV POETRY_HOME=/opt/poetry
+WORKDIR /hue2mqtt-conf
 
-RUN apk add --no-cache gcc musl-dev libffi-dev openssl-dev cargo \
-    && command python3 -m venv $POETRY_HOME \
-    && $POETRY_HOME/bin/pip install --upgrade pip \
-    && $POETRY_HOME/bin/pip install poetry==1.4.0 \
-    && $POETRY_HOME/bin/poetry --version
+# ENV POETRY_HOME=/opt/poetry
 
-ENV PATH="${POETRY_HOME}/bin:${PATH}"
+# RUN apk add --no-cache gcc musl-dev libffi-dev openssl-dev cargo \
+#     && command python3 -m venv $POETRY_HOME \
+#     && $POETRY_HOME/bin/pip install --upgrade pip \
+#     && $POETRY_HOME/bin/pip install poetry==1.4.0 \
+#     && $POETRY_HOME/bin/poetry --version
 
-RUN poetry install -vvv --no-ansi
+# ENV PATH="${POETRY_HOME}/bin:${PATH}"
 
-VOLUME [ "/hue2mqtt-python" ]
+# RUN poetry install -vvv --no-ansi
 
-ENTRYPOINT ["poetry"]
-CMD ["run", "hue2mqtt"]
+VOLUME [ "/hue2mqtt-conf" ]
+
+# ENTRYPOINT ["poetry"]
+# CMD ["run", "hue2mqtt"]
+CMD ["hue2mqtt"]
