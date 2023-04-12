@@ -1,7 +1,5 @@
 FROM python:3.11-alpine3.17
 
-RUN pip install --no-cache-dir hue2mqtt==0.4.0
-
 # COPY . /hue2mqtt-python
 
 WORKDIR /hue2mqtt-conf
@@ -13,6 +11,8 @@ RUN apk add --no-cache gcc musl-dev libffi-dev openssl-dev cargo
 #     && $POETRY_HOME/bin/pip install --upgrade pip \
 #     && $POETRY_HOME/bin/pip install poetry==1.4.0 \
 #     && $POETRY_HOME/bin/poetry --version
+
+RUN pip install --no-cache-dir hue2mqtt==0.4.0
 
 # ENV PATH="${POETRY_HOME}/bin:${PATH}"
 
