@@ -1,6 +1,6 @@
 # syntax = docker/dockerfile:1.0-experimental
 
-FROM python:3.11-slim
+FROM python:3.12-slim
 
 RUN pip install --upgrade pip
 
