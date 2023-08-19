@@ -16,7 +16,7 @@ from typing import Match, Optional
 
 import aiohue
 from aiohttp.client import ClientSession
-from pydantic import ValidationError
+from pydantic import ValidationError, parse_obj_as
 
 from hue2mqtt import __version__
 from hue2mqtt.messages import BridgeInfo, Hue2MQTTStatus
@@ -36,7 +36,7 @@ LOGGER = logging.getLogger(__name__)
 loop = asyncio.get_event_loop()
 
 
-class Hue2MQTT():
+class Hue2MQTT:
     """Hue to MQTT Bridge."""
 
     config: Hue2MQTTConfig
@@ -165,7 +165,7 @@ class Hue2MQTT():
             light = self._bridge.lights[light_id]
             if light.uniqueid == uniqueid:
                 try:
-                    state = LightSetState(**json.loads(payload))
+                    state = parse_obj_as(LightSetState, json.loads(payload))
                     LOGGER.info(f"Updating {light.name}")
                     await light.set_state(**state.dict())
                 except json.JSONDecodeError:
@@ -183,7 +183,7 @@ class Hue2MQTT():
 
         try:
             group = self._bridge.groups[groupid]
-            state = GroupSetState(**json.loads(payload))
+            state = parse_obj_as(GroupSetState, json.loads(payload))
             LOGGER.info(f"Updating group {group.name}")
             await group.set_action(**state.dict())
         except IndexError:
@@ -198,19 +198,19 @@ class Hue2MQTT():
     async def main(self, websession: ClientSession) -> None:
         """Main method of the data component."""
         # Publish initial info about lights
-        for id, light_raw in self._bridge.lights._items.items():
-            light = LightInfo(id=id, **light_raw.raw)
+        for idx, light_raw in self._bridge.lights._items.items():
+            light = LightInfo(id=idx, **light_raw.raw)
             self.publish_light(light)
 
         # Publish initial info about groups
-        for id, group_raw in self._bridge.groups._items.items():
-            group = GroupInfo(id=id, **group_raw.raw)
+        for idx, group_raw in self._bridge.groups._items.items():
+            group = GroupInfo(id=idx, **group_raw.raw)
             self.publish_group(group)
 
         # Publish initial info about sensors
-        for id, sensor_raw in self._bridge.sensors._items.items():
+        for idx, sensor_raw in self._bridge.sensors._items.items():
             if "uniqueid" in sensor_raw.raw and "productname" in sensor_raw.raw:
-                sensor = SensorInfo(id=id, **sensor_raw.raw)
+                sensor = SensorInfo(id=idx, **sensor_raw.raw)
                 self.publish_sensor(sensor)
             else:
                 LOGGER.debug(f"Ignoring virtual sensor: {sensor_raw.name}")

@@ -1,8 +1,7 @@
 """Schemas for data about lights."""
-from datetime import datetime
-from typing import Any, List, Optional, Tuple, Union
+from typing import Any, List, Optional, Tuple
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, create_model
 
 
 class LightBaseState(BaseModel):
@@ -47,7 +46,7 @@ class LightState(LightBaseState):
 class LightInfo(BaseModel):
     """Information about a light."""
 
-    id: int
+    id: int  # noqa: A003
     name: str
     uniqueid: str
     state: Optional[LightState]
@@ -55,7 +54,7 @@ class LightInfo(BaseModel):
     manufacturername: str
     modelid: str
     productname: str
-    type: str
+    type: str  # noqa: A003
 
     swversion: str
 
@@ -70,11 +69,11 @@ class GroupState(BaseModel):
 class GroupInfo(BaseModel):
     """Information about a light group."""
 
-    id: int
+    id: int  # noqa: A003
     name: str
     lights: List[int]
     sensors: List[int]
-    type: str
+    type: str  # noqa: A003
     state: GroupState
 
     group_class: Optional[str] = Field(default=None, alias="class")
@@ -85,72 +84,75 @@ class GroupInfo(BaseModel):
 class GenericSensorState(BaseModel):
     """Information about the state of a sensor."""
 
-    lastupdated: datetime
+    lastupdated: Optional[str] = None
 
 
 class PresenceSensorState(GenericSensorState):
     """Information about the state of a sensor."""
 
-    presence: bool
+    presence: Optional[bool] = None
 
 
 class RotarySensorState(GenericSensorState):
     """Information about the state of a sensor."""
 
-    rotaryevent: str
-    expectedrotation: str
-    expectedeventduration: str
+    rotaryevent: Optional[str] = None
+    expectedrotation: Optional[str] = None
+    expectedeventduration: Optional[str] = None
 
 
 class SwitchSensorState(GenericSensorState):
     """Information about the state of a sensor."""
 
-    buttonevent: Optional[int]
+    buttonevent: Optional[int] = None
 
 
 class LightLevelSensorState(GenericSensorState):
     """Information about the state of a sensor."""
 
-    dark: bool
-    daylight: bool
-    lightlevel: int
+    dark: Optional[bool] = None
+    daylight: Optional[bool] = None
+    lightlevel: Optional[int] = None
 
 
 class TemperatureSensorState(GenericSensorState):
     """Information about the state of a sensor."""
 
-    temperature: int
+    temperature: Optional[int] = None
 
 
 class HumiditySensorState(GenericSensorState):
     """Information about the state of a sensor."""
 
-    humidity: int
+    humidity: Optional[int] = None
 
 
 class OpenCloseSensorState(GenericSensorState):
     """Information about the state of a sensor."""
 
-    open: str
+    open: Optional[str] = None  # noqa: A003
 
 
-SensorState = Union[
-    PresenceSensorState,
-    RotarySensorState,
-    SwitchSensorState,
-    LightLevelSensorState,
-    TemperatureSensorState,
-    HumiditySensorState,
-    OpenCloseSensorState,
-]
+SensorState = create_model(
+    "SensorState",
+    __base__=(
+        LightLevelSensorState,
+        PresenceSensorState,
+        RotarySensorState,
+        SwitchSensorState,
+        TemperatureSensorState,
+        HumiditySensorState,
+        OpenCloseSensorState,
+    ),
+)
 
 
 class SensorInfo(BaseModel):
     """Information about a sensor."""
 
-    id: int
+    id: int  # noqa: A003
     name: str
-    type: str
+    type: str  # noqa: A003
     modelid: str
     manufacturername: str
 
@@ -158,5 +160,5 @@ class SensorInfo(BaseModel):
     uniqueid: str
     swversion: Optional[str]
 
-    state: SensorState
+    state: SensorState  # type: ignore[valid-type]
     capabilities: Any

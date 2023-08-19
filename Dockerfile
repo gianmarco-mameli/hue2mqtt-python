@@ -1,25 +1,15 @@
-FROM python:3.11-alpine3.17
+# syntax = docker/dockerfile:1.0-experimental
 
-# COPY . /hue2mqtt-python
+FROM python:3.11-slim
 
-WORKDIR /hue2mqtt-conf
+RUN pip install --upgrade pip
 
-# ENV POETRY_HOME=/opt/poetry
+COPY . /hue2mqtt-python
 
-RUN apk add --no-cache gcc musl-dev libffi-dev openssl-dev cargo
-#     && command python3 -m venv $POETRY_HOME \
-#     && $POETRY_HOME/bin/pip install --upgrade pip \
-#     && $POETRY_HOME/bin/pip install poetry==1.4.0 \
-#     && $POETRY_HOME/bin/poetry --version
+WORKDIR /hue2mqtt-python
 
-RUN pip install --no-cache-dir hue2mqtt==0.4.0
+RUN pip install .
 
-# ENV PATH="${POETRY_HOME}/bin:${PATH}"
+VOLUME [ "./hue2mqtt.toml" ]
 
-# RUN poetry install -vvv --no-ansi
-
-VOLUME [ "/hue2mqtt-conf" ]
-
-# ENTRYPOINT ["poetry"]
-# CMD ["run", "hue2mqtt"]
 CMD ["hue2mqtt"]
