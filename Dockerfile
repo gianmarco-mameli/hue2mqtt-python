@@ -8,6 +8,8 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get install -y --no-install-recommends \
                 gcc \
                 libffi-dev \
+                libbz2-dev \
+                liblzma-dev \
                 zlib1g-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
