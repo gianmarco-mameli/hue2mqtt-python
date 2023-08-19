@@ -1,6 +1,8 @@
 # syntax = docker/dockerfile:1.0-experimental
 
-FROM python:3.12-slim
+FROM python:3.9-slim
+
+RUN apt-get install build-essential libssl-dev libffi-dev python-dev
 
 RUN pip install --upgrade pip
 
