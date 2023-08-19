@@ -12,7 +12,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /tmp/* /var/tmp/*
 
-RUN pip install --upgrade pip
+RUN pip install --upgrade pip rust
 
 COPY . /hue2mqtt-python
 
