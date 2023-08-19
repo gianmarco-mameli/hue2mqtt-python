@@ -10,6 +10,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
                 libffi-dev \
                 libbz2-dev \
                 liblzma-dev \
+                libcurl4-openssl-dev \
                 zlib1g-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
