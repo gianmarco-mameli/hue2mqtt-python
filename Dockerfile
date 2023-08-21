@@ -1,29 +1,22 @@
-# syntax = docker/dockerfile:1.0-experimental
-
-FROM python:3.11-slim
-
-RUN export DEBIAN_FRONTEND=noninteractive \
-    && apt-get update \
-    && apt-get upgrade -y \
-    && apt-get install -y --no-install-recommends \
-                gcc \
-                libffi-dev \
-                libbz2-dev \
-                liblzma-dev \
-                libcurl4-openssl-dev \
-                zlib1g-dev \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* \
-    && rm -rf /tmp/* /var/tmp/*
-
-RUN pip install --upgrade pip rust
+FROM python:3.11-alpine
 
 COPY . /hue2mqtt-python
 
 WORKDIR /hue2mqtt-python
 
-RUN pip install .
+ENV POETRY_HOME=/opt/poetry
 
-VOLUME [ "./hue2mqtt.toml" ]
+RUN apk add --no-cache gcc musl-dev libffi-dev openssl-dev cargo \
+    && command python3 -m venv $POETRY_HOME \
+    && $POETRY_HOME/bin/pip install --upgrade pip \
+    && $POETRY_HOME/bin/pip install poetry==1.4.0 \
+    && $POETRY_HOME/bin/poetry --version
 
-CMD ["hue2mqtt"]
+ENV PATH="${POETRY_HOME}/bin:${PATH}"
+
+RUN poetry install -vvv --no-ansi
+
+VOLUME [ "/hue2mqtt-python" ]
+
+ENTRYPOINT ["poetry"]
+CMD ["run", "hue2mqtt"]
